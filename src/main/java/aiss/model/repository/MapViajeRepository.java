@@ -142,7 +142,7 @@ public class MapViajeRepository implements ViajeRepository{
 
 	@Override
 	public Collection<Vuelo> getAll(String viajeId) {
-		return getViaje(viajeId).getVuelo();
+		return getViaje(viajeId).getVuelos();
 	}
 
 	@Override

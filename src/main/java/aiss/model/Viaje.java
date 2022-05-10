@@ -48,7 +48,7 @@ public class Viaje {
 		this.fecha = fecha;
 	}
 
-	public List<Vuelo> getVuelo() {
+	public List<Vuelo> getVuelos() {
 		return vuelos;
 	}
 
