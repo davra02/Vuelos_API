@@ -108,7 +108,7 @@ public class MapViajeRepository implements ViajeRepository{
 	// Playlist related operations
 	@Override
 	public void addViaje(Viaje v) {
-		String id = "v" + index++;	
+		String id = "viaje" + index++;	
 		v.setId(id);
 		viajeMap.put(id,v);
 	}
@@ -155,7 +155,7 @@ public class MapViajeRepository implements ViajeRepository{
 	
 	@Override
 	public void addVuelo(Vuelo v) {
-		String id = "v" + index++;
+		String id = "vuelo" + index++;
 		v.setId(id);
 		vueloMap.put(id, v);
 	}

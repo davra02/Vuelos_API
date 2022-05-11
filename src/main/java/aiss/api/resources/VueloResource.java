@@ -1,6 +1,6 @@
 package aiss.api.resources;
 
-import java.net.URI;
+import java.net.URI; 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,51 +30,63 @@ import aiss.model.repository.ViajeRepository;
 
 @Path("/vuelos")
 public class VueloResource {
-	
-	//CAMBIAR IDS POR UN HASH CODE, AÑADIENDO UNA PROPIEDAD MAS EN EL TIPO VUELO, LO HAREMOS CON UNA CLASE DE JAVA 
-	//QUE CREE CODIGOS ALEATORIOS PARA TENER UN IDENTIFICADOR DE VUELO
-	
+
 	public static VueloResource _instance=null;
 	ViajeRepository repository;
 	
 	private VueloResource(){
-		repository = MapViajeRepository.getInstance();
+		repository=MapViajeRepository.getInstance();
 	}
 	
 	public static VueloResource getInstance()
 	{
 		if(_instance==null)
-			_instance=new VueloResource();
-		return _instance; 
+				_instance=new VueloResource();
+		return _instance;
 	}
+	
 	
 	@GET
 	@Produces("application/json")
 	public Collection<Vuelo> getAll(@QueryParam("q") String q, @QueryParam("order") String order, @QueryParam("limit") Integer limit,
-			@QueryParam("offset") Integer offset)
-	{
+			@QueryParam("offset") Integer offset)	{
 		List<Vuelo> result = new ArrayList<>();
-		for(Vuelo vuelo: repository.getAllVuelos()) {
-			if(q == null || vuelo.getId().contains(q) || vuelo.getCompañia().contains(q)) {
-				result.add(vuelo);
-			}
-		}
-		
-		if(order!= null) {
-			if(order.equals("album")) {
-				Collections.sort(result,new ComparatorSongAlbum());
-			}else if(order.equals("-album")) {
-				Collections.sort(result,new ComparatorSongAlbumReversed());
-			}else if(order.equals("artist")) {
-				Collections.sort(result,new ComparatorSongArtist());
-			}else if(order.equals("-artist")) {
-				Collections.sort(result,new ComparatorSongArtistReversed());
-			}else if(order.equals("year")) {
-				Collections.sort(result,new ComparatorSongYear());
-			}else if(order.equals("-year")) {
-				Collections.sort(result,new ComparatorSongYearReversed());
+		for(Vuelo v: repository.getAllVuelos()) {
+			if(q == null || v.getCompañia().equals(q) || v.getEscala().equals(q)
+					|| v.getHoraLlegada().equals(q) || v.getHoraSalida().equals(q)
+					|| v.getNumAsiento().equals(q) || v.getPrecio().equals(q)){
+				
+					result.add(v);
+				}
+			}	
+		if (order != null) {
+			if(order.equals("compañia")) {
+				Collections.sort(result, new ComparatorVueloCompañia());
+			} else if(order.equals("-compañia")) {
+				Collections.sort(result, new ComparatorVueloCompañia().reversed());
+			} else if(order.equals("escala")) {
+				Collections.sort(result, new ComparatorVueloEscala());
+			} else if(order.equals("-escala")) {
+				Collections.sort(result, new ComparatorVueloEscala().reversed());
+			} else if(order.equals("horaLlegada")) {
+				Collections.sort(result, new ComparatorVueloHoraLlegada());
+			} else if(order.equals("-horaLlegada")) {
+				Collections.sort(result, new ComparatorVueloHoraLlegada().reversed());
+			}else if(order.equals("horaSalida")) {
+				Collections.sort(result, new ComparatorVueloHoraSalida());
+			} else if(order.equals("-horaSalida")) {
+				Collections.sort(result, new ComparatorVueloHoraSalida().reversed());
+			}else if(order.equals("numAsiento")) {
+				Collections.sort(result, new ComparatorVueloNumAsiento());
+			} else if(order.equals("-numAsiento")) {
+				Collections.sort(result, new ComparatorVueloNumAsiento().reversed());
+			}else if(order.equals("precio")) {
+				Collections.sort(result, new ComparatorVueloPrecio());
+			} else if(order.equals("-precio")) {
+				Collections.sort(result, new ComparatorVueloPrecio().reversed());
 			}else {
-				throw new BadRequestException("The order parameter should be name or -name");
+				throw new BadRequestException(
+						"The order parameter should be one of these: compañia, -compañia, escala, -escala, horaLlegada, -horaLlegada, horaSalida, -horaSalida, numAsiento, -numAsiento, precio, -precio");
 			}
 		}
 		
@@ -96,34 +108,39 @@ public class VueloResource {
 	@GET
 	@Path("/{id}")
 	@Produces("application/json")
-	public Vuelo get(@PathParam("id") String vueloId)
+	public Vuelo get(@PathParam("id") String id)
 	{
+		Vuelo vuelo = repository.getVuelo(id);
 		
-		Vuelo v = repository.getVuelo(vueloId);
-		if(v == null) {
-			throw new NotFoundException("The song with id="+vueloId+" doesn't exist");
+		if (vuelo == null) {
+			throw new NotFoundException("El vuelo con id="+ id +" no se encontró.");			
 		}
 		
-		
-		return v;
+		return vuelo;
 	}
 	
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response addSong(@Context UriInfo uriInfo, Vuelo vuelo) {
-		if(vuelo.getId()== null || "".equals(vuelo.getId())) {  // CAMBIAR POR UN HASHCODE
-			throw new BadRequestException("El id del vuelo no es válido");
+	public Response addVuelo(@Context UriInfo uriInfo, Vuelo vuelo) {
+		if ((vuelo.getCompañia() == null || "".equals(vuelo.getCompañia()))
+			|| (vuelo.getEscala() == null || "".equals(vuelo.getEscala()))
+			|| (vuelo.getHoraLlegada() == null || "".equals(vuelo.getHoraLlegada()))
+			|| (vuelo.getHoraSalida() == null || "".equals(vuelo.getHoraSalida()))
+			|| (vuelo.getNumAsiento() == null || "".equals(vuelo.getNumAsiento()))
+			|| (vuelo.getPrecio() == null || "".equals(vuelo.getPrecio()))) {
+			throw new BadRequestException("Ningún campo del vuelo puede ser nulo o "
+					+ "una cadena vacía"); 
 		}
-		repository.addVuelo(vuelo);
+		repository.addVuelo(vuelo);	
 		
-		UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
-		URI uri = ub.build(vuelo.getId());
-		ResponseBuilder resp = Response.created(uri);
-		resp.entity(vuelo);			
-		return resp.build();
+		// Builds the response. Returns the vuelos the has just been added.
+			UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
+			URI uri = ub.build(vuelo.getId());
+		 	ResponseBuilder resp = Response.created(uri);
+			resp.entity(vuelo);			
+			return resp.build();
 	}
-	
 	
 	@PUT
 	@Consumes("application/json")
@@ -131,34 +148,30 @@ public class VueloResource {
 		Vuelo oldVuelo = repository.getVuelo(vuelo.getId());
 		
 		if(oldVuelo == null) {
-			throw new NotFoundException("El vuelo con el id="+vuelo.getId()+" no existe.");
+			throw new NotFoundException("El vuelo con el id ="+vuelo.getId()+" no se encontró");
 		}
-		if(vuelo.getId()!= null) {
-			oldVuelo.setId(vuelo.getId());	
-		}
-		
 		if(vuelo.getCompañia()!= null) {
 			oldVuelo.setCompañia(vuelo.getCompañia());	
 		}
 		
 		if(vuelo.getEscala()!= null) {
-			oldVuelo.setEscala(vuelo.getEscala());			
+			oldVuelo.setEscala(vuelo.getEscala());	
 		}
 		
-		if(vuelo.getHoraLlegada()!=null) {
-			oldVuelo.setHoraLlegada(vuelo.getHoraLlegada());	
+		if(vuelo.getHoraLlegada()!= null) {
+			oldVuelo.setHoraLlegada(vuelo.getHoraLlegada());			
 		}
 		
-		if(vuelo.getHoraSalida() != null) {
-			oldVuelo.setHoraSalida(vuelo.getHoraSalida());
+		if(vuelo.getHoraSalida()!=null) {
+			oldVuelo.setHoraSalida(vuelo.getHoraSalida());	
 		}
 		
-		if(vuelo.getNumAsiento() != null) {
-			oldVuelo.setNumAsiento(vuelo.getNumAsiento());
+		if(vuelo.getNumAsiento()!=null) {
+			oldVuelo.setNumAsiento(vuelo.getNumAsiento());	
 		}
 		
-		if(vuelo.getPrecio() != null) {
-			oldVuelo.setPrecio(vuelo.getPrecio());
+		if(vuelo.getPrecio()!=null) {
+			oldVuelo.setPrecio(vuelo.getPrecio());	
 		}
 		
 		return Response.noContent().build();
@@ -166,15 +179,15 @@ public class VueloResource {
 	
 	@DELETE
 	@Path("/{id}")
-	public Response removeSong(@PathParam("id") String vueloId) {
+	public Response removeVuelo(@PathParam("id") String vueloId) {
 		Vuelo toberemoved = repository.getVuelo(vueloId);
 		if(toberemoved == null) {
-			throw new NotFoundException("El vuelo con el id="+vueloId+" no existe.");
+			throw new NotFoundException("La canción con el id="+vueloId+" no se encontró");
 		}else {
 			repository.deleteVuelo(vueloId);
 		}
 		
 		return Response.noContent().build();
 	}
-
+		
 }

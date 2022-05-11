@@ -3,6 +3,7 @@ package aiss.api.resources;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -48,7 +49,7 @@ public class ViajeResource {
 	
 	@GET
 	@Produces("application/json")
-	public Collection<Viaje> getAll(@QueryParam("isEmpty") Boolean isEmpty, @QueryParam("name") String name)
+	public Collection<Viaje> getAll(@QueryParam("isEmpty") Boolean isEmpty, @QueryParam("name") String name,  @QueryParam("order") String order)
 	{
 		List<Viaje> result = new ArrayList<>();
 		for(Viaje v: repository.getAllViajes()) {
@@ -59,11 +60,21 @@ public class ViajeResource {
 						(!isEmpty && (v.getVuelos() != null || v.getVuelos().size() > 0)) ) {
 					result.add(v);
 				}
-			}	
-		}	
+			}
+			if (order != null) {
+				if(order.equals("fecha")) {
+					Collections.sort(result, new ComparatorViajeFecha());
+				} else if (order.equals("-fecha")) {
+					Collections.sort(result, new ComparatorViajeFecha().reversed());
+				} else {
+				
+				throw new BadRequestException(
+						"The order parameter should be one of these: fecha, -fecha");
+				}
+			}
+		}
 		return result;
 	}
-	
 	
 	@GET
 	@Path("/{id}")
@@ -189,3 +200,4 @@ public class ViajeResource {
 		return Response.noContent().build();
 	}
 }
+
