@@ -28,6 +28,7 @@ import aiss.model.Vuelo;
 import aiss.model.repository.MapViajeRepository;
 import aiss.model.repository.ViajeRepository;
 
+@Path("/vuelos")
 public class VueloResource {
 	
 	//CAMBIAR IDS POR UN HASH CODE, AÑADIENDO UNA PROPIEDAD MAS EN EL TIPO VUELO, LO HAREMOS CON UNA CLASE DE JAVA 
