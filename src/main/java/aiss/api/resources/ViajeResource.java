@@ -28,7 +28,7 @@ import aiss.model.Vuelo;
 import aiss.model.repository.MapViajeRepository;
 import aiss.model.repository.ViajeRepository;
 
-@Path("/songs")
+@Path("/viajes")
 public class ViajeResource {
 
 	public static ViajeResource _instance=null;
