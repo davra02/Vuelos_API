@@ -54,8 +54,7 @@ public class VueloResource {
 	{
 		List<Vuelo> result = new ArrayList<>();
 		for(Vuelo vuelo: repository.getAllVuelos()) {
-			if(q == null || vuelo.getId().contains(q) || vuelo.getCompañia().contains(q) ||
-					vuelo.getEscala().contains(q)) {
+			if(q == null || vuelo.getId().contains(q) || vuelo.getCompañia().contains(q)) {
 				result.add(vuelo);
 			}
 		}
@@ -113,7 +112,7 @@ public class VueloResource {
 	@Produces("application/json")
 	public Response addSong(@Context UriInfo uriInfo, Vuelo vuelo) {
 		if(vuelo.getId()== null || "".equals(vuelo.getId())) {  // CAMBIAR POR UN HASHCODE
-			throw new BadRequestException("The song name is not valid");
+			throw new BadRequestException("El id del vuelo no es válido");
 		}
 		repository.addVuelo(vuelo);
 		
@@ -131,7 +130,7 @@ public class VueloResource {
 		Vuelo oldVuelo = repository.getVuelo(vuelo.getId());
 		
 		if(oldVuelo == null) {
-			throw new NotFoundException("The song with de id="+vuelo.getId()+" doesn't exist");
+			throw new NotFoundException("El vuelo con el id="+vuelo.getId()+" no existe.");
 		}
 		if(vuelo.getId()!= null) {
 			oldVuelo.setId(vuelo.getId());	
@@ -169,7 +168,7 @@ public class VueloResource {
 	public Response removeSong(@PathParam("id") String vueloId) {
 		Vuelo toberemoved = repository.getVuelo(vueloId);
 		if(toberemoved == null) {
-			throw new NotFoundException("The song with de id="+vueloId+" doesn't exist");
+			throw new NotFoundException("El vuelo con el id="+vueloId+" no existe.");
 		}else {
 			repository.deleteVuelo(vueloId);
 		}
