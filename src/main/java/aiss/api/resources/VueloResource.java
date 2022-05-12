@@ -86,7 +86,7 @@ public class VueloResource {
 				Collections.sort(result, new ComparatorVueloPrecio().reversed());
 			}else {
 				throw new BadRequestException(
-						"The order parameter should be one of these: compañia, -compañia, escala, -escala, horaLlegada, -horaLlegada, horaSalida, -horaSalida, numAsiento, -numAsiento, precio, -precio");
+						"El parámetro debería ser uno de los siguientes: compañia, -compañia, escala, -escala, horaLlegada, -horaLlegada, horaSalida, -horaSalida, numAsiento, -numAsiento, precio, -precio");
 			}
 		}
 		
