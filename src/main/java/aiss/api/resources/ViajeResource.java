@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.jboss.resteasy.spi.NotFoundException;
 
+import aiss.api.comparators.*;
 import aiss.model.Viaje;
 import aiss.model.Vuelo;
 import aiss.model.repository.MapViajeRepository;

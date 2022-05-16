@@ -9,6 +9,7 @@ public class Viaje {
 	private String fecha;
 	private List<Vuelo> vuelos;
 	
+	
 	public Viaje(){
 	}
 	

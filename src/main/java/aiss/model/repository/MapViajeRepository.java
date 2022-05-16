@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import aiss.model.Avion;
 import aiss.model.Viaje;
 import aiss.model.Vuelo;
 
@@ -13,6 +14,7 @@ public class MapViajeRepository implements ViajeRepository{
 
 	Map<String, Viaje> viajeMap;
 	Map<String, Vuelo> vueloMap;
+	Map<String, Avion> avionMap;
 	private static MapViajeRepository instance=null;
 	private int index=0;			// Index to create playlists and songs' identifiers.
 	
@@ -38,7 +40,6 @@ public class MapViajeRepository implements ViajeRepository{
 		vuelo1.setEscala("true");
 		vuelo1.setHoraLlegada("4:00");
 		vuelo1.setHoraSalida("14:00");
-		vuelo1.setNumAsiento("16");
 		vuelo1.setPrecio("199");
 		addVuelo(vuelo1);
 		
@@ -47,7 +48,6 @@ public class MapViajeRepository implements ViajeRepository{
 		vuelo2.setEscala("false");
 		vuelo2.setHoraLlegada("22:00");
 		vuelo2.setHoraSalida("11:00");
-		vuelo2.setNumAsiento("100");
 		vuelo2.setPrecio("249");
 		addVuelo(vuelo2);
 		
@@ -57,7 +57,6 @@ public class MapViajeRepository implements ViajeRepository{
 		vuelo3.setEscala("true");
 		vuelo3.setHoraLlegada("23:00");
 		vuelo3.setHoraSalida("11:30");
-		vuelo3.setNumAsiento("67");
 		vuelo3.setPrecio("225");
 		addVuelo(vuelo3);
 		
@@ -67,7 +66,6 @@ public class MapViajeRepository implements ViajeRepository{
 		vuelo4.setEscala("flase");
 		vuelo4.setHoraLlegada("12:00");
 		vuelo4.setHoraSalida("10:00");
-		vuelo4.setNumAsiento("100");
 		vuelo4.setPrecio("79");
 		addVuelo(vuelo4);
 		
@@ -77,7 +75,6 @@ public class MapViajeRepository implements ViajeRepository{
 		vuelo5.setEscala("false");
 		vuelo5.setHoraLlegada("20:00");
 		vuelo5.setHoraSalida("18:00");
-		vuelo5.setNumAsiento("114");
 		vuelo5.setPrecio("75");
 		addVuelo(vuelo5);
 		
@@ -177,7 +174,6 @@ public class MapViajeRepository implements ViajeRepository{
 		vuelo.setEscala(v.getEscala());
 		vuelo.setHoraLlegada(v.getHoraLlegada());
 		vuelo.setHoraSalida(v.getHoraSalida());
-		vuelo.setNumAsiento(v.getNumAsiento());
 		vuelo.setPrecio(v.getPrecio());
 
 	}
@@ -185,6 +181,28 @@ public class MapViajeRepository implements ViajeRepository{
 	@Override
 	public void deleteVuelo(String vueloId) {
 		vueloMap.remove(vueloId);
+	}
+
+	@Override
+	public Collection<Avion> getAllAviones() {
+		return avionMap.values();
+	}
+
+	@Override
+	public Avion getAvion(String id) {
+		return avionMap.get(id);
+	}
+
+	@Override
+	public void addAvion(Avion avion) {
+		String id = "avion "+ index++;
+		avion.setId(id);
+		avionMap.put(id, avion);
+	}
+
+	@Override
+	public void deleteAvion(String avionId) {
+		vueloMap.remove(avionId);
 	}
 	
 }

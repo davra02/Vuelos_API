@@ -24,6 +24,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.jboss.resteasy.spi.BadRequestException;
 import org.jboss.resteasy.spi.NotFoundException;
 
+import aiss.api.comparators.*;
 import aiss.model.Vuelo;
 import aiss.model.repository.MapViajeRepository;
 import aiss.model.repository.ViajeRepository;
@@ -52,9 +53,10 @@ public class VueloResource {
 			@QueryParam("offset") Integer offset)	{
 		List<Vuelo> result = new ArrayList<>();
 		for(Vuelo v: repository.getAllVuelos()) {
-			if(q == null || v.getCompañia().equals(q) || v.getEscala().equals(q)
-					|| v.getHoraLlegada().equals(q) || v.getHoraSalida().equals(q)
-					|| v.getNumAsiento().equals(q) || v.getPrecio().equals(q)){
+			if(q == null || v.getCompañia().equals(q)
+					|| v.getHoraLlegada().equals(q) 
+					|| v.getHoraSalida().equals(q) 
+					|| v.getPrecio().equals(q)){
 				
 					result.add(v);
 				}
@@ -124,10 +126,8 @@ public class VueloResource {
 	@Produces("application/json")
 	public Response addVuelo(@Context UriInfo uriInfo, Vuelo vuelo) {
 		if ((vuelo.getCompañia() == null || "".equals(vuelo.getCompañia()))
-			|| (vuelo.getEscala() == null || "".equals(vuelo.getEscala()))
 			|| (vuelo.getHoraLlegada() == null || "".equals(vuelo.getHoraLlegada()))
 			|| (vuelo.getHoraSalida() == null || "".equals(vuelo.getHoraSalida()))
-			|| (vuelo.getNumAsiento() == null || "".equals(vuelo.getNumAsiento()))
 			|| (vuelo.getPrecio() == null || "".equals(vuelo.getPrecio()))) {
 			throw new BadRequestException("Ningún campo del vuelo puede ser nulo o "
 					+ "una cadena vacía"); 
@@ -154,20 +154,12 @@ public class VueloResource {
 			oldVuelo.setCompañia(vuelo.getCompañia());	
 		}
 		
-		if(vuelo.getEscala()!= null) {
-			oldVuelo.setEscala(vuelo.getEscala());	
-		}
-		
 		if(vuelo.getHoraLlegada()!= null) {
 			oldVuelo.setHoraLlegada(vuelo.getHoraLlegada());			
 		}
 		
 		if(vuelo.getHoraSalida()!=null) {
 			oldVuelo.setHoraSalida(vuelo.getHoraSalida());	
-		}
-		
-		if(vuelo.getNumAsiento()!=null) {
-			oldVuelo.setNumAsiento(vuelo.getNumAsiento());	
 		}
 		
 		if(vuelo.getPrecio()!=null) {

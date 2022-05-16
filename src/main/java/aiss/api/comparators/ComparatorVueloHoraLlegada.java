@@ -1,4 +1,4 @@
-package aiss.api.resources;
+package aiss.api.comparators;
 
 import java.util.Comparator;
 

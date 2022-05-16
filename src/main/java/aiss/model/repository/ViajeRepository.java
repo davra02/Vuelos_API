@@ -2,6 +2,7 @@ package aiss.model.repository;
 
 import java.util.Collection;
 
+import aiss.model.Avion;
 import aiss.model.Viaje;
 import aiss.model.Vuelo;
 
@@ -20,5 +21,9 @@ public interface ViajeRepository {
 	Vuelo getVuelo(String vueloId);
 	void updateVuelo(Vuelo v);
 	void deleteVuelo(String vueloId);
+	Collection<Avion> getAllAviones();
+	Avion getAvion(String id);
+	void addAvion(Avion avion);
+	void deleteAvion(String avionId);
 
 }
