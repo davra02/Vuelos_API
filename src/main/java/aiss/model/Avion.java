@@ -7,12 +7,23 @@ public class Avion {
 	private String id;
 	private String capacidad;
 	private String modelo;
-	private List<Servicio> servicios;
+	private List<String> servicios;
 	
 	
-	public Avion(String id, String capacidad, String modelo, List<Servicio> servicios) {
+	public Avion() {
+		
+	}
+	
+	public Avion(String id, String capacidad, String modelo, List<String> servicios) {
 		super();
 		this.id = id;
+		this.capacidad = capacidad;
+		this.modelo = modelo;
+		this.servicios = servicios;
+	}
+	
+	public Avion(String capacidad, String modelo, List<String> servicios) {
+		super();
 		this.capacidad = capacidad;
 		this.modelo = modelo;
 		this.servicios = servicios;
@@ -37,13 +48,10 @@ public class Avion {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
-	public List<Servicio> getServicios() {
+	public List<String> getServicios() {
 		return servicios;
 	}
-	public void setServicios(List<Servicio> servicios) {
+	public void setServicios(List<String> servicios) {
 		this.servicios = servicios;
 	}
-	
-	
-
 }

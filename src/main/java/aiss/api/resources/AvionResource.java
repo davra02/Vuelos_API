@@ -1,6 +1,7 @@
 package aiss.api.resources;
 
 import java.net.URI; 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,12 +50,14 @@ public class AvionResource {
 	
 	@GET
 	@Produces("application/json")
-	public Collection<Avion> getAll(@QueryParam("q") String q, @QueryParam("order") String order, @QueryParam("limit") Integer limit,
-			@QueryParam("offset") Integer offset)	{
+	public Collection<Avion> getAll(@QueryParam("capacidad") String capacidadMaxima, @QueryParam("order") String order, @QueryParam("limit") Integer limit,
+			@QueryParam("offset") Integer offset,@QueryParam("servicio") String servicio)	{
 		List<Avion> result = new ArrayList<>();
 		for(Avion a: repository.getAllAviones()) {
-			if(q == null || a.getCapacidad().equals(q) || a.getModelo().equals(q) || a.getServicios().equals(q) ){
+			if(capacidadMaxima == null || Integer.parseInt(a.getCapacidad())<=Integer.parseInt(capacidadMaxima)){
+				if(servicio == null || a.getServicios().contains(servicio)) {
 					result.add(a);
+				}
 				}
 			}	
 		if (order != null) {
@@ -96,7 +99,7 @@ public class AvionResource {
 		Avion avion = repository.getAvion(id);
 		
 		if (avion == null) {
-			throw new NotFoundException("El avion con id="+ id +" no se encontró.");			
+			throw new NotFoundException("El avion con id "+ id +" no se encontró.");			
 		}
 		
 		return avion;
@@ -109,13 +112,13 @@ public class AvionResource {
 		if ((avion.getCapacidad() == null || "".equals(avion.getCapacidad()))
 			|| (avion.getModelo() == null || "".equals(avion.getModelo()))
 			|| (avion.getModelo() == null || "".equals(avion.getModelo()))
-			|| (avion.getServicios() == null || "".equals(avion.getServicios()))) {
+			|| (avion.getServicios() == null)) {
 			throw new BadRequestException("Ningún campo del avion puede ser nulo o "
 					+ "una cadena vacía"); 
 		}
 		repository.addAvion(avion);	
 		
-		// Builds the response. Returns the vuelos the has just been added.
+		// Builds the response. Returns the aviones the has just been added.
 			UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(this.getClass(), "get");
 			URI uri = ub.build(avion.getId());
 		 	ResponseBuilder resp = Response.created(uri);
@@ -129,7 +132,7 @@ public class AvionResource {
 		Avion oldAvion = repository.getAvion(avion.getId());
 		
 		if(oldAvion == null) {
-			throw new NotFoundException("El avion con el id ="+avion.getId()+" no se encontró");
+			throw new NotFoundException("El avion con el id "+avion.getId()+" no se encontró");
 		}
 		if(avion.getCapacidad()!= null) {
 			oldAvion.setCapacidad(avion.getCapacidad());	
@@ -151,7 +154,7 @@ public class AvionResource {
 	public Response removeAvion(@PathParam("id") String avionId) {
 		Avion toberemoved = repository.getAvion(avionId);
 		if(toberemoved == null) {
-			throw new NotFoundException("La canción con el id="+avionId+" no se encontró");
+			throw new NotFoundException("El avión con el id "+avionId+" no se encontró");
 		}else {
 			repository.deleteAvion(avionId);
 		}

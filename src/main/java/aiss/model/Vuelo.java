@@ -96,7 +96,4 @@ public class Vuelo {
 	public void setEscala(String escala) {
 		this.escala = escala;
 	}
-	
-	
-	
 }

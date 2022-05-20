@@ -13,6 +13,23 @@ public class Viaje {
 	public Viaje(){
 	}
 	
+	public Viaje(String id, String origen, String destino, String fecha, List<Vuelo> vuelos) {
+		super();
+		this.id = id;
+		this.origen = origen;
+		this.destino = destino;
+		this.fecha = fecha;
+		this.vuelos = vuelos;
+	}
+	
+	public Viaje(String origen, String destino, String fecha, List<Vuelo> vuelos) {
+		super();
+		this.origen = origen;
+		this.destino = destino;
+		this.fecha = fecha;
+		this.vuelos = vuelos;
+	}
+	
 	protected void setVuelos(List<Vuelo> v) {
 		vuelos = v;
 	}

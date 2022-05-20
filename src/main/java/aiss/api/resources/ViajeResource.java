@@ -50,17 +50,25 @@ public class ViajeResource {
 	
 	@GET
 	@Produces("application/json")
-	public Collection<Viaje> getAll(@QueryParam("isEmpty") Boolean isEmpty, @QueryParam("name") String name,  @QueryParam("order") String order)
+	public Collection<Viaje> getAll(@QueryParam("isEmpty") Boolean isEmpty, @QueryParam("id") String id,  @QueryParam("order") String order,
+			@QueryParam("origen") String origen, @QueryParam("destino") String destino, @QueryParam("fecha") String fecha,
+			@QueryParam("limit") Integer limit, @QueryParam("offset") Integer offset)
 	{
 		List<Viaje> result = new ArrayList<>();
 		for(Viaje v: repository.getAllViajes()) {
 			//Filtros
-			if(name == null || v.getId().equals(name)){
-				if(isEmpty == null ||
-						(isEmpty && (v.getVuelos()== null || v.getVuelos().size()==0)) ||
-						(!isEmpty && (v.getVuelos() != null || v.getVuelos().size() > 0)) ) {
-					result.add(v);
-				}
+			if(id == null || v.getId().equals(id)){
+				if(origen == null || v.getOrigen().equals(origen)) {
+					if(destino == null || v.getDestino().equals(destino)) {
+						if(fecha == null || v.getFecha().equals(fecha)) {
+							if(isEmpty == null ||
+									(isEmpty && (v.getVuelos()== null || v.getVuelos().size()==0)) ||
+									(!isEmpty && (v.getVuelos() != null || v.getVuelos().size() > 0)) ) {
+								result.add(v);
+							}
+						}
+					}
+				}	
 			}
 			if (order != null) {
 				if(order.equals("fecha")) {
@@ -74,8 +82,20 @@ public class ViajeResource {
 				}
 			}
 		}
+		if(offset != null) {
+			if(limit != null) {
+				result = result.subList(offset, limit);
+			}else {
+				result = result.subList(offset, result.size());
+			}
+		}else {
+			if(limit != null) {
+				result = result.subList(0, limit);
+			}
+		}
 		return result;
 	}
+	
 	
 	@GET
 	@Path("/{id}")
@@ -102,7 +122,7 @@ public class ViajeResource {
 					+ "una cadena vacía");
 		
 		if (viaje.getVuelos()!=null)
-			throw new BadRequestException("The songs property is not editable.");
+			throw new BadRequestException("La propiedad vuelos no es editable.");
 
 		repository.addViaje(viaje);
 
@@ -195,7 +215,7 @@ public class ViajeResource {
 					viajeId +" no se encontró");
 		if (vuelo == null)
 			throw new NotFoundException("El vuelo con id="+ 
-					viajeId +" no se encontró");
+					vueloId +" no se encontró");
 		repository.removeVuelo(viajeId, vueloId);		
 		
 		return Response.noContent().build();

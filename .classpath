@@ -25,5 +25,32 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Pablo/.m2/repository/com/google/appengine/appengine-api-1.0-sdk/1.9.80/appengine-api-1.0-sdk-1.9.80.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.google.appengine"/>
+			<attribute name="maven.artifactId" value="appengine-api-1.0-sdk"/>
+			<attribute name="maven.version" value="1.9.80"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Pablo/.m2/repository/org/jboss/resteasy/jaxrs-api/2.3.10.Final/jaxrs-api-2.3.10.Final.jar" sourcepath="C:/Users/Pablo/.m2/repository/org/jboss/resteasy/jaxrs-api/2.3.10.Final/jaxrs-api-2.3.10.Final-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.jboss.resteasy"/>
+			<attribute name="maven.artifactId" value="jaxrs-api"/>
+			<attribute name="maven.version" value="2.3.10.Final"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Pablo/.m2/repository/org/jboss/resteasy/resteasy-jaxrs/2.3.10.Final/resteasy-jaxrs-2.3.10.Final.jar" sourcepath="C:/Users/Pablo/.m2/repository/org/jboss/resteasy/resteasy-jaxrs/2.3.10.Final/resteasy-jaxrs-2.3.10.Final-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.jboss.resteasy"/>
+			<attribute name="maven.artifactId" value="resteasy-jaxrs"/>
+			<attribute name="maven.version" value="2.3.10.Final"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/APIones-1.0-SNAPSHOT/WEB-INF/classes"/>
 </classpath>

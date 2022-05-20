@@ -1,6 +1,7 @@
 package aiss.api.resources;
 
 import java.net.URI; 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,16 +50,16 @@ public class VueloResource {
 	
 	@GET
 	@Produces("application/json")
-	public Collection<Vuelo> getAll(@QueryParam("q") String q, @QueryParam("order") String order, @QueryParam("limit") Integer limit,
-			@QueryParam("offset") Integer offset)	{
+	public Collection<Vuelo> getAll(@QueryParam("compañia") String compañia, @QueryParam("order") String order, @QueryParam("limit") Integer limit,
+			@QueryParam("offset") Integer offset, @QueryParam("precioMax") String precioMax,  @QueryParam("tieneBusiness") String business)	{
 		List<Vuelo> result = new ArrayList<>();
 		for(Vuelo v: repository.getAllVuelos()) {
-			if(q == null || v.getCompañia().equals(q)
-					|| v.getHoraLlegada().equals(q) 
-					|| v.getHoraSalida().equals(q) 
-					|| v.getPrecio().equals(q)){
-				
-					result.add(v);
+			if(compañia == null || v.getCompañia().equals(compañia)) {
+				if(precioMax == null || Integer.parseInt(v.getPrecio())<= Integer.parseInt(precioMax)) {
+					if(business == null || v.getAvion().getServicios().contains(business)) {
+						result.add(v);
+					}
+				}
 				}
 			}	
 		if (order != null) {
@@ -78,10 +79,6 @@ public class VueloResource {
 				Collections.sort(result, new ComparatorVueloHoraSalida());
 			} else if(order.equals("-horaSalida")) {
 				Collections.sort(result, new ComparatorVueloHoraSalida().reversed());
-			}else if(order.equals("numAsiento")) {
-				Collections.sort(result, new ComparatorVueloNumAsiento());
-			} else if(order.equals("-numAsiento")) {
-				Collections.sort(result, new ComparatorVueloNumAsiento().reversed());
 			}else if(order.equals("precio")) {
 				Collections.sort(result, new ComparatorVueloPrecio());
 			} else if(order.equals("-precio")) {
@@ -115,7 +112,7 @@ public class VueloResource {
 		Vuelo vuelo = repository.getVuelo(id);
 		
 		if (vuelo == null) {
-			throw new NotFoundException("El vuelo con id="+ id +" no se encontró.");			
+			throw new NotFoundException("El vuelo con id "+ id +" no se encontró.");			
 		}
 		
 		return vuelo;
@@ -148,7 +145,7 @@ public class VueloResource {
 		Vuelo oldVuelo = repository.getVuelo(vuelo.getId());
 		
 		if(oldVuelo == null) {
-			throw new NotFoundException("El vuelo con el id ="+vuelo.getId()+" no se encontró");
+			throw new NotFoundException("El vuelo con el id "+vuelo.getId()+" no se encontró");
 		}
 		if(vuelo.getCompañia()!= null) {
 			oldVuelo.setCompañia(vuelo.getCompañia());	
@@ -174,7 +171,7 @@ public class VueloResource {
 	public Response removeVuelo(@PathParam("id") String vueloId) {
 		Vuelo toberemoved = repository.getVuelo(vueloId);
 		if(toberemoved == null) {
-			throw new NotFoundException("La canción con el id="+vueloId+" no se encontró");
+			throw new NotFoundException("El vuelo con el id "+vueloId+" no se encontró");
 		}else {
 			repository.deleteVuelo(vueloId);
 		}

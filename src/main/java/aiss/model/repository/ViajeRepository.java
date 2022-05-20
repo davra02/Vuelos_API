@@ -25,5 +25,5 @@ public interface ViajeRepository {
 	Avion getAvion(String id);
 	void addAvion(Avion avion);
 	void deleteAvion(String avionId);
-
+	void updateAvion(Avion a);
 }
