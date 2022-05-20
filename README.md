@@ -1,29 +1,34 @@
 # Implementación de una API REST 
 
-Proyecto AISS
+APIones
 
-La API REST estará formada por dos recursos que permitirán manipular listas de reproducción y canciones respectivamente. 
-
-El contrato de servicios de listas de reproducción se detalla a continuación. No todas las opciones han sido implementadas en el código proporcionado. El objetivo de esta práctica es se implementen todos los métodos necesarios para que la API funcione como se detalla a continuación. 
+La API estará formada por dos recursos que permitirán manipular viajes, vuelos y aviones respectivamente. 
 
 ### Recurso Vuelo ###
 | HTTP  | URI | Descripción |
 | ------------- | ------------- | ------------- |
-| GET |  /song | Devuelve todas las canciones de la aplicación. •	Es posible ordenar las canciones por el álbum o el artista con el parámetro de query “order”, que acepta los valores “album”, “-album”, “artist” o “-artist”. •	También es posible filtrar las canciones devueltas con el parámetro de query “q”, que devuelve aquellas canciones cuyo título, álbum o artista contengan la cadena enviada (ignorando mayúsculas y minúsculas).|
-| GET | /song/{songId}  |  Devuelve la canción con id=songId. Si la canción no existe devuelve un “404 Not Found”. |
-| POST | /song | Añade una nueva canción cuyos datos se pasan en el cuerpo de la petición en formato JSON (no se debe pasar id, se genera automáticamente). Si el nombre de la canción no es válido (null o vacío) devuelve un error “400 Bad Request”. Si se añade satisfactoriamente, devuelve “201 Created” con la referencia a la URI y el contenido de la canción. |
-| PUT | /song  | Actualiza la canción cuyos datos se pasan en el cuerpo de la petición en formato JSON (deben incluir el id de la canción). Si la canción no existe, devuelve un “404 Not Found”. Si se realiza correctamente, devuelve “204 No Content”. |
-| DELETE | /song/{songId}  |  Elimina la canción con id=songId. Si la canción no existe, devuelve un “404 Not Found”. Si se realiza correctamente, devuelve “204 No Content”.|
+| GET |  /vuelo | Devuelve todos los vuelos de la aplicacion. •	Es posible ordenar los vuelos por compañía, escala, hora de llegada, hora de salida y precio, aceptando los siguientes valores: "compañia", "-compañia", "escala", "-escala", "horaLlegada", "-horaLlegada", "horaSalida", "-horaSalida", "precio", "-precio". •También es posible filtrar los vuelos devueltos con los parámetros de query “compañia”, "precioMax" o "tieneBusiness" que devuelve aquellos vuelos cuya compañia, contengan la cadena enviada, cuyo precio sea menor o igual que el enviado o cuyos servicios de avion contenga business (ignorando mayúsculas y minúsculas).|
+| GET | /vuelo/{vueloId}  |  Devuelve el vuelo con id=vueloId. Si el vuelo no existe devuelve un “404 Not Found”. |
+| POST | /vuelo | Añade un nuevo vuelo cuyos datos se pasan en el cuerpo de la petición en formato JSON (el id se genera automáticamente). Si algún campo del vuelo no es válido (null o vacío) devuelve un error “400 Bad Request”. Si se añade satisfactoriamente, devuelve “201 Created” con la referencia a la URI y el contenido del vuelo. |
+| PUT | /vuelo  | Actualiza el vuelo cuyos datos se pasan en el cuerpo de la petición en formato JSON (deben incluir el id del vuelo). Si el vuelo no existe, devuelve un “404 Not Found”. Si se realiza correctamente, devuelve “204 No Content”. |
+| DELETE | /vuelo/{vueloId}  |  Elimina el vuelo con id=vueloId. Si el vuelo no existe, devuelve un “404 Not Found”. Si se realiza correctamente, devuelve “204 No Content”.|
 
-Cada **canción** tiene un identificador, _título, nombre del artista, álbum y año_. La representación JSON del recurso es:
+Cada **vuelo** tiene un identificador, _compañía, hora de llegada, hora de salida, precio, escala y avion_. La representación JSON del recurso es:
 
 ```cpp
 {
-	"id":"s3",
-	"title":"Smell Like Teen Spirit",
-	"artist":"Nirvana",
-	"album":"Nevermind",
-	"year":"1991"
+	"id":"Vuelo 3",
+	"compañia":"Ryanair",
+	"horaLlegada":"8pm",
+	"horaSalida":"4pm",
+	"precio":"80",
+	"escala":"false".
+	"avion":{
+			"id": "Avion 1"
+			"capacidad": "68"
+			"modelo": "Boeing 777"
+			"servicios: ["business, "alimentacion, "WiFi"]
+		}
 }
 ```
 
@@ -67,6 +72,17 @@ Una **lista de reproducción** tiene un _identificador, nombre, descripción y u
 }
 
 ```
+
+### Recurso Avion ###
+| HTTP  | URI | Descripción |
+| ------------- | ------------- | ------------- |
+| GET |  /song | Devuelve todas las canciones de la aplicación. •	Es posible ordenar las canciones por el álbum o el artista con el parámetro de query “order”, que acepta los valores “album”, “-album”, “artist” o “-artist”. •	También es posible filtrar las canciones devueltas con el parámetro de query “q”, que devuelve aquellas canciones cuyo título, álbum o artista contengan la cadena enviada (ignorando mayúsculas y minúsculas).|
+| GET | /song/{songId}  |  Devuelve la canción con id=songId. Si la canción no existe devuelve un “404 Not Found”. |
+| POST | /song | Añade una nueva canción cuyos datos se pasan en el cuerpo de la petición en formato JSON (no se debe pasar id, se genera automáticamente). Si el nombre de la canción no es válido (null o vacío) devuelve un error “400 Bad Request”. Si se añade satisfactoriamente, devuelve “201 Created” con la referencia a la URI y el contenido de la canción. |
+| PUT | /song  | Actualiza la canción cuyos datos se pasan en el cuerpo de la petición en formato JSON (deben incluir el id de la canción). Si la canción no existe, devuelve un “404 Not Found”. Si se realiza correctamente, devuelve “204 No Content”. |
+| DELETE | /song/{songId}  |  Elimina la canción con id=songId. Si la canción no existe, devuelve un “404 Not Found”. Si se realiza correctamente, devuelve “204 No Content”.|
+
+
 #� �p�r�o�y�e�c�t�o�A�i�s�s�_�v�i�a�j�e�s�
 �
 �
