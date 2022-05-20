@@ -27,7 +27,7 @@ Cada **vuelo** tiene un identificador, _compañía, hora de llegada, hora de sal
 			"id": "Avion 1"
 			"capacidad": "68"
 			"modelo": "Boeing 777"
-			"servicios: ["business, "alimentacion, "WiFi"]
+			"servicios: ["business", "alimentacion", "WiFi"]
 		}
 }
 ```
